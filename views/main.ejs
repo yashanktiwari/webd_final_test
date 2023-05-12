@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
+    <title>Twitter Home Page</title>
+</head>
+<body>
+    <div class="app">
+        <div class="side">
+           <ul>
+            <li id="home"><i class="fa-solid fa-house"></i></i> Home</li>
+            <li id="profile"><i class="fa-solid fa-user"></i> Profile</li>
+            <li><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> logout</a></li>
+           </ul>
+        </div>
+        <div class="main" id="main">
+            <h4>Home</h4>
+            <div class="option">
+                <h3 id="recent">
+                    Recent
+                </h1>
+                <h3 id="followers">
+                    Following
+                </h1>
+            </div>
+            <div id="follow">
+                <div class="tweets">
+                    <% if(followtweets) {%>
+                        <ul class="list-group">
+                        <% followtweets.map(t=>{  console.log(t)%>
+                            
+                                <li class="list-group-item tweet"><img src="<%=t.url%>" alt="" class="profile"> <%=t.name %>  <span class="blockquote-footer"><%=t.date.split(",")[0]  %></span></li>
+                                <li class="list-group-item">  <p><%= t.tweet %></p>
+                                    <p> <i class="fa-solid fa-heart like" id="like"
+                                      style="color: #eeb9d4;"></i>  <%=t.likes.length%></p> </p></li>
+                                
+                         
+                    <% })} %>
+                    </ul>
+                </div>
+            </div>
+            <div id="all">
+                
+<div class="tweetin">
+    <form action="/tweet" method="post" style="width:99%;padding-left: 10px;">
+    <textarea class="form-control" aria-label="With textarea" name="tweet"></textarea>
+
+    <input type="submit" value="Tweet" id="tweetbtn">
+</form>
+  </div>
+                <div class="tweets">
+                    <% if(alltweets) {%>
+                        <ul class="list-group">
+                        <% alltweets.map(t=>{  console.log(t)%>
+                            
+                                <li class="list-group-item tweet"><img src="<%=t.url%>" alt="" class="profile"> <span id="<%=t.uid%>" class="upf" onclick="refer(this.id)" ><%=t.name %> </span>  <span class="blockquote-footer"><%=t.date.split(',')[0]  %></span></li>
+                                <li class="list-group-item">  <p><%= t.tweet %></p>
+                                    <p> <i class="fa-solid fa-heart like" id="like"
+                                      style="color: #eeb9d4;"></i>  02</p> </p></li>
+                                
+                         
+                    <% })} %>
+                    </ul>
+                </div>
+            </div>
+           
+              
+        </div>
+        <div id="mytweet" class="main">
+
+
+            <div class="top">
+                <div class="img">
+                    <img src="<%=getUser.url%>" alt="" height="40" width="40" class="profile" style="width: 60px;height:60px;">
+                </div>
+                <div class="info">
+                    <div class="name">  <h4><%=getUser.name%></h4></div>
+                    <div class="detail"> <%=mytweet.length  %> Tweets - <%= getUser.following.length %> Following  </div>
+                </div>
+              
+            </div>
+            <div class="tweets">
+                <% if(mytweet) {%>
+                    <ul class="list-group">
+                    <% mytweet.map(t=>{  console.log(t)%>
+                        
+                            <li class="list-group-item tweet"><img src="<%=t.url%>" alt="" class="profile"> <%=t.name %>  <span class="blockquote-footer"><%=t.date.split(',')  %></span></li>
+                            <li class="list-group-item">  <p><%= t.tweet %></p>
+                              <p> <i class="fa-solid fa-heart like" id="like"
+                                style="color: #eeb9d4;"></i>  02</p> 
+                            </li>
+
+                            
+                     
+                <% })} %>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .app{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+           
+        }
+        .side{
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+           padding-top: 40px;
+           
+            position: fixed;
+            height: 100%;;
+            /* background-color: #1DA1F2; */
+            border-right:1px solid rgba(0, 0, 0, 0.5) ;
+        }
+        .main{
+            width: 80%;
+            margin-left: 20%;
+            height: 100%;
+            background-color: #fff;
+        }
+        .side a{
+            text-decoration: none;
+        }
+        .side li{
+            text-align: center;
+            list-style: none;
+            padding: 20px;
+            /* border-bottom: 2px solid lightskyblue; */
+            cursor: pointer;
+            font-size: large;
+        }
+        .side li:hover{
+            background-color: #c3f0fc;
+        }
+        .side li a{
+            color: black;
+        }
+        .profile{
+            background-color: black;
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+        }
+        .list-group{
+            border-radius: 0;
+        }
+        .tweet{
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .option{
+            display: flex;
+
+            justify-content: space-around;
+            cursor: pointer;
+        }
+        .upf:hover{
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .top{
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding: 30px;
+            width: 100%;
+        }
+        #follow{
+            border: none;
+            outline: none;
+            padding: 5px;
+            color: rgb(37, 122, 250);
+        }
+        .like{
+            cursor: pointer;
+        }
+        textarea{
+            width:99%;
+            height: 100px;
+            resize: none;
+            border-radius: 10px;
+        }
+        .tweetin{
+            display: flex;
+            width: 100%;
+            padding: 20px;
+            gap: 10px;
+        }
+        #tweetbtn{
+            width: 100px;
+            height: 40px;
+            margin-top: 5px;
+            float: right;
+            border-radius: 20px;
+            background-color: rgb(37, 122, 250);
+            color: white;
+            border: none;
+            outline: none;
+            cursor: pointer;}
+    </style>
+    <script>
+        const main=document.getElementById("main");
+        const mytweet=document.getElementById("mytweet");
+
+        const all=document.getElementById("all");
+        const follow=document.getElementById("follow");
+        const recent=document.getElementById("recent");
+        const followers=document.getElementById("followers");
+        const home=document.getElementById("home");
+        const profile=document.getElementById("profile");
+        mytweet.style.display='none'
+        recent.style="border-bottom:3px solid lightblue"
+        follow.style.display='none'
+        home.addEventListener("click",()=>{
+           mytweet.style.display="none"
+              main.style.display="block"
+        })
+        profile.addEventListener("click",()=>{
+            mytweet.style.display="inline"
+              main.style.display="none"
+        })
+
+        recent.addEventListener("click",()=>{
+            all.style.display="block";
+            follow.style.display="none";
+            recent.style="border-bottom:3px solid lightblue"
+            followers.style="border-bottom:none"
+        })
+        followers.addEventListener("click",()=>{
+            all.style.display="none";
+            follow.style.display="block";
+            followers.style="border-bottom:3px solid lightblue"
+            recent.style="border-bottom:none"
+        })
+        function refer(loc){
+            window.location.href="user/"+loc
+        }
+
+        const like=document.getElementById('like')
+        like.addEventListener("click",(e)=>{
+            console.log(e.target,"jkgkj")
+            // e.target.style="color: red;"
+        })
+
+    </script>
+</body>
+</html>
